@@ -54,7 +54,10 @@ class UnivariateGaussian:
         """
 
         self.mu_ = X.mean()
-        self.var_ = X.var()
+        if self.biased_:
+            self.var_ = np.sum((X - self.mu_)**2)/X.shape[0]
+        else:
+            self.var_ = np.sum((X-self.mu_)**2)/(X.shape[0]-1)
         self.fitted_ = True
         return self
 
