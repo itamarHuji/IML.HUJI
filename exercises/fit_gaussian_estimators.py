@@ -23,12 +23,12 @@ def test_univariate_gaussian():
     # Question 2 - Empirically showing sample mean is consistent
     estimated_mu = [np.abs(MU - UnivariateGaussian().fit(X[0:10*n]).mu_) for n in range(1,SAMPLE_SIZE//10 + 1)]
     estimated_mu_df = pd.DataFrame(np.array([estimated_mu,10*np.arange(1,101,1)]).T,columns=["Mean Estimator Deviation","Sample Size"])
-    fig = px.scatter(estimated_mu_df,x="Sample Size", y="Mean Estimator Deviation",
-               title="Mean Estimator Deviation As a Function of Sample Size",width=600,height=600)
+    fig = px.scatter(estimated_mu_df,x="Sample Size", y="Mean Estimator Deviation")
+    fig.update_layout(title={"text": "Mean Estimator Deviation As a Function of Sample Size",
+                      "xanchor" : "center", "yanchor" : "top", "x" : 0.5, "y" : 0.95})
     fig.update_yaxes(range=[-0.01,0.8])
     # fig.show()
-    # fig.write_image("normal_dist_mean_deviation.png") ## i obviously used this to save the image but i hid it
-    # to ease the grading proccess in case it will be run by you guys
+    fig.write_image("normal_dist_mean_deviation.png")
 
     # Question 3 - Plotting Empirical PDF of fitted model
     PDF = np.array([X,fitted_model.pdf(X)]).T
@@ -36,8 +36,8 @@ def test_univariate_gaussian():
     PDF = PDF[indexes]
     PDF_DF = pd.DataFrame(PDF,columns=["x","cols"])
     fig1_3 = px.scatter(PDF_DF,x="x",y="cols")
-    fig1_3.update_layout(yaxis_title={"text":r'$f_{\hat{\mathcal{N}}}(x)$',"font": {"size" : 15}},
-                         title={"text": "Empirical PDF Function Under the Fitted Model",
+    fig1_3.update_layout(yaxis_title={"text":r'$\hat{f}_{\hat{\mathcal{N}}}(x)$',"font": {"size" : 15}},
+                         title={"text": "Empirical PDF Function For the Fitted Model",
                                 "xanchor" : "center", "yanchor" : "top", "x" : 0.5, "y" : 0.95},
                          xaxis_title = {"font" : {"size" : 15}})
     # fig1_3.show()
@@ -84,7 +84,6 @@ def test_multivariate_gaussian():
     idx = np.unravel_index(z_.argmax(),z_.shape)
     print("Question 6")
     print("log-likelihood argmax")
-    print()
     print(np.round(f_vals[idx[0]],3),np.round(f_vals[idx[1]],3))
 
 if __name__ == '__main__':
